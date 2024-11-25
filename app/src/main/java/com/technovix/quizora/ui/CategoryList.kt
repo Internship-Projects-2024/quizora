@@ -18,11 +18,14 @@ import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.technovix.quizora.viewmodel.MainViewModel
 
 @Composable
 fun CategoryList(categories: List<Category>) {
@@ -47,7 +50,6 @@ fun CategoryItem(category: Category) {
             .border(1.dp, Color.Gray, MaterialTheme.shapes.medium),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        // Use Box to center the content inside the Card
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -65,6 +67,15 @@ fun CategoryItem(category: Category) {
 @Preview(showBackground = true)
 @Composable
 fun CategoryItemPreview() {
-    CategoryItem(category = Category(id = 10, name = "Sample Category"))
-    CategoryItem(category = Category(id = 11, name = "Category"))
+    CategoryItem(category = Category(id = 1, name = "Sample Category"))
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CategoryListPreview() {
+    CategoryList(categories = listOf(
+        Category(id = 1, name = "Bilim"),
+        Category(id = 2, name = "Sanat"),
+        Category(id = 3, name = "Spor")
+    ))
 }

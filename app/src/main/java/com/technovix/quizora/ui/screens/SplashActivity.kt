@@ -1,9 +1,12 @@
 package com.technovix.quizora.ui.screens
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,23 +20,30 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.technovix.quizora.ui.screens.ui.theme.QuizoraTheme
 import androidx.navigation.compose.rememberNavController
-import com.technovix.quizora.MainScreen
 import com.technovix.quizora.R
+import com.technovix.quizora.ui.theme.QuizoraTheme
 import kotlinx.coroutines.delay
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +67,17 @@ class SplashActivity : ComponentActivity() {
 @Composable
 fun SplashScreen(navController: NavHostController) {
     // Splash ekranının görünme süresi (örneğin 2 saniye)
+
+    var alphaState by remember { mutableStateOf(0f) }
+
+    val alphaAnim by animateFloatAsState(
+        targetValue = alphaState,
+        animationSpec = tween(durationMillis = 5000)
+    )
+
     LaunchedEffect(Unit) {
-        delay(5000) // 2 saniye bekleyin
+        alphaState = 1f
+        delay(5000)
         navController.navigate("home") {
             popUpTo("splash") { inclusive = true }
         }
@@ -80,7 +99,8 @@ fun SplashScreen(navController: NavHostController) {
             Text(
                 text = "Hoşgeldiniz!",
                 fontSize = 30.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black.copy(alpha = alphaAnim)
             )
         }
 
@@ -99,17 +119,32 @@ fun SplashScreen(navController: NavHostController) {
                 contentDescription = "Technovix Logo",
                 modifier = Modifier
                     .size(40.dp) // Boyutu 40x40 dp olarak ayarlayın
+                    .alpha(alphaAnim)
             )
 
             // Metin: "Made by TECHNOVIX"
             Text(
                 text = "Made by TECHNOVIX",
                 fontSize = 16.sp,
+                fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 8.dp) // Logo ile metin arasındaki boşluğu ayarla
+                modifier = Modifier
+                    .padding(start = 8.dp) // Logo ile metin arasındaki boşluğu ayarla
+                    .alpha(alphaAnim)
             )
         }
     }
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun SplashScreenPreview() {
+    val fakeNavController = rememberNavController()
+    QuizoraTheme {
+        SplashScreen(navController = fakeNavController)
+    }
+}
+
 
 
