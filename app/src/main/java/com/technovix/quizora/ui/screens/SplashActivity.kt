@@ -27,23 +27,22 @@ class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
             QuizoraTheme {
                 SplashScreen {
-                    // Splash ekranından sonra MainActivity'yi başlatıyoruz
                     startActivity(Intent(this, MainActivity::class.java))
-                    finish() // SplashActivity'yi kapatıyoruz, geri dönülememesi için
+                    finish()
                 }
             }
         }
     }
 }
 
+
 @Composable
 fun SplashScreen(onTimeout: () -> Unit) {
     LaunchedEffect(Unit) {
-        delay(5000) // Splash ekranında 5 saniye bekleyin
+        delay(4000) // Splash ekranında 5 saniye bekleyin
         onTimeout() // Süre bitince callback fonksiyonu çağrılır
     }
 

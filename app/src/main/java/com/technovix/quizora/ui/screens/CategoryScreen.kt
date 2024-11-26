@@ -19,7 +19,7 @@ fun CategoryScreen() {
         Category(5, "Tarih")
     )
 
-    Box {
+    Box() {
         Text(text = "category")
     }
 }
